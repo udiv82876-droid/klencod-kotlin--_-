@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#7659e8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>عُمري | My Age</title>
+<style>
+:root{
+ --bg:#f4f2fb;--card:#fff;--text:#25243a;--muted:#9291a4;--line:#e9e7f1;
+ --primary:#7659e8;--soft:#f0ecff;--green:#20a783;--shadow:0 8px 30px #3020600b;
+ --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)
+}
+body.dark{
+ --bg:#10121e;--card:#1d2030;--text:#f6f5ff;--muted:#a4a5b8;--line:#333448;
+ --primary:#a18aff;--soft:#302b49;--green:#43c6a0;--shadow:0 8px 30px #0003
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
+body{
+ margin:0;min-height:100vh;min-height:100dvh;padding:0;
+ background:var(--bg);color:var(--text);
+ font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+ transition:background .2s,color .2s;overflow-x:hidden
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{width:100%;max-width:760px;margin:0 auto;padding:calc(26px + var(--safe-top)) 16px calc(112px + var(--safe-bottom));}
+.header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 18px;min-height:58px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:43px;height:43px;flex:0 0 43px;border-radius:15px;background:linear-gradient(140deg,#a48aff,#6045d1);color:#fff;display:grid;place-items:center;font-size:25px;box-shadow:0 6px 17px #7559e844}
+.brand h1{font-size:18px;margin:0;line-height:1.3}
+.brand small{font-size:10px;color:var(--muted)}
+.tools{display:flex;gap:6px;align-items:center}
+.iconbtn{width:39px;height:39px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--text);font-size:17px;display:grid;place-items:center;flex:0 0 auto}
+.screen{display:none;animation:appear .2s ease}
+.screen.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:23px;padding:19px;margin-bottom:15px;box-shadow:var(--shadow)}
+.heading{font-size:17px;font-weight:850;margin:0 0 17px}
+.hero{border-radius:25px;padding:22px;color:#fff;background:linear-gradient(130deg,#5946cf,#8066eb 65%,#ac94fa);box-shadow:0 13px 28px #7559e82c;margin-bottom:15px}
+.hero h2{font-size:22px;margin:8px 0}
+.hero p{font-size:12px;line-height:1.9;margin:0;opacity:.92}
+.hero small{font-size:11px;opacity:.88}
+.age{text-align:center;padding:25px 13px}
+.age-label{font-size:13px;color:var(--muted)}
+.age-value{color:var(--primary);font-size:clamp(22px,5.4vw,36px);font-weight:900;margin:15px 0;line-height:1.9}
+.age-sub{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:19px;padding:17px 13px;min-width:0}
+.stat strong{display:block;color:var(--primary);font-size:clamp(19px,5vw,25px);direction:ltr;text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat span{display:block;font-size:12px;color:var(--muted);margin-top:7px}
+.birthday{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.birthday strong{font-size:29px;color:var(--green)}
+.birthday small{display:block;color:var(--muted);font-size:12px}
+.progress{height:9px;background:var(--bg);border-radius:20px;overflow:hidden;margin:17px 0 10px}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,#20a783,#8bd7bc);border-radius:20px;transition:width .3s}
+.info{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px}
+.info span{color:var(--muted)}
+.info b{text-align:end;overflow-wrap:anywhere}
+.info:last-child{border:0}
+.field{margin-bottom:13px;min-width:0}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
+.field input,.field select{width:100%;height:47px;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--text);padding:10px;outline:none;min-width:0}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #7659e81c}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.primary{width:100%;border:0;border-radius:15px;padding:15px;color:#fff;font-weight:800;background:linear-gradient(110deg,#7155df,#a18afa);box-shadow:0 8px 18px #7559e82b}
+.secondary{border:0;border-radius:13px;background:var(--soft);color:var(--primary);padding:12px;font-weight:750}
+.small{font-size:11px;color:var(--muted);line-height:1.9}
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.settings-row span{font-size:13px}
+.switch{appearance:none;-webkit-appearance:none;width:45px;height:25px;border-radius:30px;background:#bbb;position:relative;flex-shrink:0;margin:0}
+.switch:checked{background:var(--primary)}
+.switch:before{content:"";position:absolute;width:19px;height:19px;right:3px;top:3px;border-radius:50%;background:white;transition:.2s}
+.switch:checked:before{right:23px}
+.switch:disabled{opacity:.4}
+.clock-display{text-align:center;padding:24px 12px;background:linear-gradient(135deg,#7255df,#a48afa);border-radius:22px;color:white;margin-bottom:15px}
+.clock-display strong{font-size:clamp(36px,10vw,52px);font-weight:800;direction:ltr;display:block;font-variant-numeric:tabular-nums}
+.clock-display span{font-size:13px;opacity:.9}
+.date-box{background:var(--bg);border:1px solid var(--line);padding:18px;border-radius:17px;margin-bottom:11px}
+.date-box small{display:block;color:var(--muted);font-size:12px}
+.date-box strong{display:block;font-size:18px;margin-top:8px}
+.date-icon{font-size:21px;margin-bottom:8px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--line);padding:9px 15px calc(9px + var(--safe-bottom))}
+.nav-inner{display:flex;width:100%;max-width:500px;gap:10px}
+.navbtn{flex:1;border:0;background:transparent;color:var(--muted);border-radius:15px;padding:8px 5px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:700}
+.nav-icon{font-size:22px}
+.navbtn.active{background:var(--soft);color:var(--primary)}
+.toast{position:fixed;bottom:calc(90px + var(--safe-bottom));left:50%;z-index:150;transform:translate(-50%,15px);opacity:0;background:#29263c;color:white;padding:12px 18px;border-radius:14px;font-size:13px;transition:.2s;pointer-events:none;white-space:normal;text-align:center;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.reminder{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}
+.reminder span{overflow-wrap:anywhere}
+.modal{position:fixed;inset:0;background:#0008;z-index:100;display:none;align-items:center;justify-content:center;padding:22px}
+.modal.show{display:flex}
+.modal-content{background:var(--card);color:var(--text);width:100%;max-width:350px;padding:25px;border-radius:25px;text-align:center;box-shadow:0 20px 70px #0003;max-height:85dvh;overflow:auto}
+.modal-content h2{font-size:21px;margin:14px 0 5px}
+.modal-content p{color:var(--muted);font-size:12px}
+.whatsapp{display:block;background:#20a783;color:white;text-decoration:none;padding:14px;border-radius:14px;font-weight:bold;margin-top:16px}
+.hidden{display:none!important}
+[dir="ltr"] .stat strong{text-align:left}
+[dir="ltr"] .info b{text-align:left}
+[dir="ltr"] .birthday>div:last-child{text-align:left!important}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:370px){.app{padding-left:11px;padding-right:11px}.tools{gap:4px}.iconbtn{width:35px;height:35px}.card{padding:15px}.row{gap:6px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+ <div class="brand"><div class="logo">✦</div><div><h1 data-t="name">عُمري</h1><small data-t="tagline">كل لحظة من عمرك لها قيمة</small></div></div>
+ <div class="tools">
+  <button class="iconbtn" id="settingsBtn" aria-label="Settings">⚙</button>
+  <button class="iconbtn" id="theme" aria-label="Theme">☾</button>
+  <button class="iconbtn" id="developerBtn" aria-label="Developer information">!</button>
+  <button class="iconbtn" id="language">EN</button>
+ </div>
+</header>
+
+<main id="ageScreen" class="screen active">
+ <section class="hero"><small data-t="welcome">مرحباً بك في</small><h2 data-t="hero">اكتشف تفاصيل عمرك</h2><p data-t="heroDesc">تابع عمرك وأيامك وتفاصيل حياتك في مكان واحد.</p></section>
+ <section class="card">
+  <h3 class="heading" data-t="birthTitle">🎂 تاريخ ميلادك</h3>
+  <div class="row">
+   <div class="field"><label data-t="year">السنة</label><input id="year" type="number" inputmode="numeric" min="1" max="9999" placeholder="2009"></div>
+   <div class="field"><label data-t="month">الشهر</label><select id="month"></select></div>
+   <div class="field"><label data-t="day">اليوم</label><select id="day"></select></div>
+  </div>
+  <div class="settings-row"><span data-t="saveBirth">حفظ تاريخ الميلاد على الجهاز</span><input type="checkbox" class="switch" id="saveBirth" checked></div>
+  <button class="primary" id="calculate" data-t="calculate">احسب عمري الآن ✦</button>
+ </section>
+ <div id="results" class="hidden">
+  <section class="card age"><div class="age-label" data-t="currentAge">عمرك الحالي</div><div class="age-value" id="age">—</div><div class="age-sub" id="ageSub">—</div></section>
+  <section class="card"><h3 class="heading" data-t="stats">📊 إحصائيات عمرك</h3><div class="grid">
+   <div class="stat"><strong id="totalMonths">—</strong><span data-t="months">إجمالي الأشهر</span></div>
+   <div class="stat"><strong id="totalDays">—</strong><span data-t="days">إجمالي الأيام</span></div>
+   <div class="stat"><strong id="totalWeeks">—</strong><span data-t="weeks">عدد الأسابيع</span></div>
+   <div class="stat"><strong id="totalHours">—</strong><span data-t="hours">إجمالي الساعات</span></div>
+   <div class="stat"><strong id="totalMinutes">—</strong><span data-t="minutes">إجمالي الدقائق</span></div>
+   <div class="stat"><strong id="totalSeconds">—</strong><span data-t="seconds">إجمالي الثواني</span></div>
+  </div></section>
+  <section class="card"><h3 class="heading" data-t="birthday">🎉 عيد ميلادك القادم</h3><div class="birthday"><div><strong id="remaining">—</strong><small data-t="daysLeft">يوم متبقٍ</small></div><div><b id="nextDate">—</b><small id="nextWeekday">—</small></div></div><div class="progress"><div id="progressBar"></div></div><div class="info"><span data-t="yearProgress">نسبة السنة الحالية</span><b id="percentage">—</b></div></section>
+  <section class="card"><h3 class="heading" data-t="extra">✨ معلومات إضافية</h3><div class="info"><span data-t="bornDay">يوم ولادتك</span><b id="birthWeekday">—</b></div><div class="info"><span data-t="zodiac">برجك</span><b id="zodiac">—</b></div><div class="info"><span data-t="nextAge">عمرك في عيد الميلاد القادم</span><b id="nextAge">—</b></div></section>
+  <button class="secondary" style="width:100%" id="share" data-t="share">مشاركة نتيجة عمري ↗</button>
+ </div>
+</main>
+
+<main id="dateScreen" class="screen">
+ <section class="hero"><small data-t="dateWelcome">التاريخ والوقت</small><h2 data-t="dateTitle">وقتك في كل لحظة</h2><p data-t="dateDesc">التاريخ والساعة يتم تحديثهما تلقائياً من جهازك.</p></section>
+ <section class="clock-display"><span data-t="currentTime">الساعة الحالية</span><strong id="clock">00:00:00</strong><span id="ampm">—</span></section>
+ <section class="card"><h3 class="heading" data-t="gregTitle">📅 التاريخ الميلادي</h3><div class="date-box"><div class="date-icon">☀️</div><small data-t="gregFull">التاريخ الميلادي الكامل</small><strong id="gregorian">—</strong></div><div class="info"><span data-t="gregDay">اليوم</span><b id="gregWeekday">—</b></div></section>
+ <section class="card"><h3 class="heading" data-t="hijriTitle">🌙 التاريخ الهجري</h3><div class="date-box"><div class="date-icon">🌙</div><small data-t="hijriFull">التاريخ الهجري الكامل</small><strong id="hijri">—</strong></div><div class="info"><span data-t="hijriDay">اليوم</span><b id="hijriWeekday">—</b></div><p class="small" data-t="hijriNote">تقويم أم القرى تلقائياً، وقد يختلف التاريخ يوماً حسب رؤية الهلال.</p></section>
+ <section class="card"><h3 class="heading" data-t="deviceTitle">📱 معلومات الوقت</h3><div class="info"><span data-t="zone">المنطقة الزمنية</span><b id="timezone">—</b></div><div class="info"><span data-t="yearNumber">السنة الحالية</span><b id="currentYear">—</b></div><div class="info"><span data-t="dayNumber">رقم اليوم في السنة</span><b id="dayNumber">—</b></div></section>
+</main>
+
+<main id="settingsScreen" class="screen">
+ <section class="hero"><small data-t="preferences">التخصيص والتحكم</small><h2 data-t="settingsTitle">إعدادات التطبيق</h2><p data-t="settingsDesc">تحكم في مظهر التطبيق والإشعارات والتذكيرات.</p></section>
+ <section class="card"><h3 class="heading" data-t="appearance">🎨 المظهر واللغة</h3><div class="settings-row"><span data-t="darkMode">الوضع الليلي</span><input type="checkbox" class="switch" id="darkSetting"></div><div class="settings-row"><span data-t="english">اللغة الإنجليزية</span><input type="checkbox" class="switch" id="englishSetting"></div></section>
+ <section class="card">
+  <h3 class="heading" data-t="notificationSettings">🔔 إعدادات الإشعارات</h3>
+  <div class="settings-row"><span data-t="enableNotifications">تفعيل جميع الإشعارات</span><input type="checkbox" class="switch" id="notifyEnabled"></div>
+  <div class="settings-row"><span data-t="daily">إشعار العمر اليومي</span><input type="checkbox" class="switch notice" id="daily"></div>
+  <div class="field"><label data-t="dailyTime">وقت الإشعار اليومي</label><input type="time" id="dailyTime" value="08:00"></div>
+  <div class="settings-row"><span data-t="birthdayNotice">إشعار يوم عيد ميلادي</span><input type="checkbox" class="switch notice" id="birthdayNotice"></div>
+  <div class="settings-row"><span data-t="beforeBirthday">تذكير قبل عيد الميلاد</span><input type="checkbox" class="switch notice" id="beforeBirthday"></div>
+  <div class="field"><label data-t="beforeDays">عدد أيام التذكير المسبق</label><select id="beforeDays"><option value="1">1</option><option value="3">3</option><option value="7" selected>7</option><option value="14">14</option><option value="30">30</option></select></div>
+  <div class="settings-row"><span data-t="eidNotice">إشعارات الأعياد الهجرية</span><input type="checkbox" class="switch notice" id="eidNotice"></div>
+  <div class="settings-row"><span data-t="customNotice">التذكيرات المخصصة</span><input type="checkbox" class="switch notice" id="customNotice"></div>
+  <p class="small" data-t="notificationInfo">الإشعارات الحقيقية بعد إغلاق التطبيق تتطلب دعماً أصلياً من Android داخل ملف APK.</p>
+  <button class="secondary" id="testNotification" style="width:100%" data-t="testNotification">تجربة الإشعار</button>
+ </section>
+ <section class="card">
+  <h3 class="heading" data-t="reminderTitle">📌 إضافة تذكير جديد</h3>
+  <div class="field"><label data-t="reminderMessage">رسالة الإشعار</label><input id="reminderMessage" data-placeholder="reminderPlaceholder" placeholder="اكتب رسالتك هنا"></div>
+  <div class="field"><label data-t="reminderDate">تاريخ التذكير</label><input type="date" id="reminderDate"></div>
+  <div class="field"><label data-t="reminderTime">وقت التذكير</label><input type="time" id="reminderTime" value="09:00"></div>
+  <button class="primary" id="addReminder" data-t="addReminder">حفظ التذكير</button><div id="reminderList"></div>
+ </section>
+ <section class="card"><h3 class="heading" data-t="about">ℹ️ حول التطبيق</h3><div class="info"><span data-t="appName">اسم التطبيق</span><b data-t="name">عُمري</b></div><div class="info"><span data-t="version">الإصدار</span><b>1.2.0</b></div><div class="info"><span data-t="storageStatus">حالة الحفظ</span><b id="storageStatus">—</b></div></section>
+</main>
+</div>
+
+<nav class="bottom-nav"><div class="nav-inner">
+ <button class="navbtn active" id="ageNav"><span class="nav-icon">🎂</span><span data-t="ageTab">عمري</span></button>
+ <button class="navbtn" id="dateNav"><span class="nav-icon">🗓️</span><span data-t="dateTab">التاريخ والوقت</span></button>
+</div></nav>
+
+<div class="modal" id="developerPopup" role="dialog" aria-modal="true">
+ <div class="modal-content">
+  <div class="logo" style="margin:auto">!</div>
+  <h2 data-t="developerTitle">معلومات المطور</h2><p data-t="developerDesc">تم تطوير هذا التطبيق بكل عناية</p>
+  <h2 id="developerName" data-t="developerName">م/ الزبير دشيلة</h2>
+  <p dir="ltr" style="font-size:16px;font-weight:bold;color:var(--text)">777608527</p>
+  <a class="whatsapp" id="whatsappLink" href="https://wa.me/967777608527" target="_self" rel="noopener" data-t="whatsapp">التواصل عبر واتساب</a>
+  <button class="secondary" style="width:100%;margin-top:12px" id="closeDeveloper" data-t="close">إغلاق</button>
+ </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const DAY=86400000;
+const STORE="omri_app_v12";
+let lang="ar",dark=false,birth=null,currentScreen="age",screenStack=[];
+let toastTimer=null;
+const dict={
+ar:{
+ name:"عُمري",tagline:"كل لحظة من عمرك لها قيمة",welcome:"مرحباً بك في",hero:"اكتشف تفاصيل عمرك",heroDesc:"تابع عمرك وأيامك وتفاصيل حياتك في مكان واحد.",
+ birthTitle:"🎂 تاريخ ميلادك",year:"السنة",month:"الشهر",day:"اليوم",saveBirth:"حفظ تاريخ الميلاد على الجهاز",calculate:"احسب عمري الآن ✦",
+ currentAge:"عمرك الحالي",stats:"📊 إحصائيات عمرك",months:"إجمالي الأشهر",days:"إجمالي الأيام",weeks:"عدد الأسابيع",hours:"إجمالي الساعات",minutes:"إجمالي الدقائق",seconds:"إجمالي الثواني",
+ birthday:"🎉 عيد ميلادك القادم",daysLeft:"يوم متبقٍ",yearProgress:"نسبة السنة الحالية",extra:"✨ معلومات إضافية",bornDay:"يوم ولادتك",zodiac:"برجك",nextAge:"عمرك في عيد الميلاد القادم",share:"مشاركة نتيجة عمري ↗",
+ dateWelcome:"التاريخ والوقت",dateTitle:"وقتك في كل لحظة",dateDesc:"التاريخ والساعة يتم تحديثهما تلقائياً من جهازك.",currentTime:"الساعة الحالية",gregTitle:"📅 التاريخ الميلادي",gregFull:"التاريخ الميلادي الكامل",gregDay:"اليوم",hijriTitle:"🌙 التاريخ الهجري",hijriFull:"التاريخ الهجري الكامل",hijriDay:"اليوم",hijriNote:"تقويم أم القرى تلقائياً، وقد يختلف التاريخ يوماً حسب رؤية الهلال.",deviceTitle:"📱 معلومات الوقت",zone:"المنطقة الزمنية",yearNumber:"السنة الحالية",dayNumber:"رقم اليوم في السنة",
+ preferences:"التخصيص والتحكم",settingsTitle:"إعدادات التطبيق",settingsDesc:"تحكم في مظهر التطبيق والإشعارات والتذكيرات.",appearance:"🎨 المظهر واللغة",darkMode:"الوضع الليلي",english:"اللغة الإنجليزية",notificationSettings:"🔔 إعدادات الإشعارات",enableNotifications:"تفعيل جميع الإشعارات",daily:"إشعار العمر اليومي",dailyTime:"وقت الإشعار اليومي",birthdayNotice:"إشعار يوم عيد ميلادي",beforeBirthday:"تذكير قبل عيد الميلاد",beforeDays:"عدد أيام التذكير المسبق",eidNotice:"إشعارات الأعياد الهجرية",customNotice:"التذكيرات المخصصة",notificationInfo:"الإشعارات الحقيقية بعد إغلاق التطبيق تتطلب دعماً أصلياً من Android داخل ملف APK.",testNotification:"تجربة الإشعار",reminderTitle:"📌 إضافة تذكير جديد",reminderMessage:"رسالة الإشعار",reminderPlaceholder:"اكتب رسالتك هنا",reminderDate:"تاريخ التذكير",reminderTime:"وقت التذكير",addReminder:"حفظ التذكير",about:"ℹ️ حول التطبيق",appName:"اسم التطبيق",version:"الإصدار",storageStatus:"حالة الحفظ",
+ ageTab:"عمري",dateTab:"التاريخ والوقت",years:"سنة",monthsUnit:"شهر",daysUnit:"يوم",weekdays:["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
+ monthNames:["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],zodiacNames:["الجدي","الدلو","الحوت","الحمل","الثور","الجوزاء","السرطان","الأسد","العذراء","الميزان","العقرب","القوس"],
+ error:"يرجى إدخال تاريخ ميلاد صحيح",future:"تاريخ الميلاد لا يمكن أن يكون في المستقبل",saved:"تم حفظ تاريخ الميلاد",added:"تم حفظ التذكير",empty:"لا توجد تذكيرات محفوظة",developerTitle:"معلومات المطور",developerDesc:"تم تطوير هذا التطبيق بكل عناية",developerName:"م/ الزبير دشيلة",whatsapp:"التواصل عبر واتساب",close:"إغلاق",invalidReminder:"يرجى إدخال جميع بيانات التذكير",notificationDenied:"لم يتم منح إذن الإشعارات",notificationUnsupported:"هذه النسخة لا تحتوي على خدمة إشعارات Android الأصلية. تفعيل مربع الإشعارات عند إنشاء APK وحده لا يكفي؛ يلزم دعم الإشعارات المجدولة من منصة التحويل.",notificationSent:"تم إرسال إشعار تجريبي",testMessage:"مرحباً! هذا إشعار تجريبي من تطبيق عُمري.",storageOk:"الحفظ المحلي جاهز",reminderPast:"اختر تاريخاً ووقتاً في المستقبل",reminderScheduled:"تم حفظ التذكير. جدولة التنبيه بالخلفية تعتمد على دعم Android.",ageSub:"السنوات والأشهر والأيام المكتملة حتى اليوم",back:"رجوع"
+},
+en:{
+ name:"My Age",tagline:"Every moment of your life matters",welcome:"Welcome to",hero:"Discover your age",heroDesc:"Follow your age and important dates in one place.",
+ birthTitle:"🎂 Your birthday",year:"Year",month:"Month",day:"Day",saveBirth:"Save birth date on this device",calculate:"Calculate my age ✦",
+ currentAge:"Your current age",stats:"📊 Age statistics",months:"Total months",days:"Total days",weeks:"Total weeks",hours:"Total hours",minutes:"Total minutes",seconds:"Total seconds",
+ birthday:"🎉 Your next birthday",daysLeft:"days left",yearProgress:"Current year progress",extra:"✨ More information",bornDay:"Day of birth",zodiac:"Zodiac",nextAge:"Age on next birthday",share:"Share my age ↗",
+ dateWelcome:"Date and time",dateTitle:"Your time, every moment",dateDesc:"Date and time update automatically from your device.",currentTime:"Current time",gregTitle:"📅 Gregorian date",gregFull:"Full Gregorian date",gregDay:"Weekday",hijriTitle:"🌙 Hijri date",hijriFull:"Full Hijri date",hijriDay:"Weekday",hijriNote:"Umm al-Qura calendar is used when supported. Actual moon sighting may differ by one day.",deviceTitle:"📱 Time information",zone:"Time zone",yearNumber:"Current year",dayNumber:"Day of year",
+ preferences:"Personalization and control",settingsTitle:"App settings",settingsDesc:"Control appearance, notifications and reminders.",appearance:"🎨 Appearance and language",darkMode:"Dark mode",english:"English language",notificationSettings:"🔔 Notification settings",enableNotifications:"Enable all notifications",daily:"Daily age notification",dailyTime:"Daily notification time",birthdayNotice:"Birthday notification",beforeBirthday:"Birthday reminder",beforeDays:"Days before birthday",eidNotice:"Hijri holiday notifications",customNotice:"Custom reminders",notificationInfo:"Real notifications after the app closes require native Android support inside the APK.",testNotification:"Test notification",reminderTitle:"📌 Add new reminder",reminderMessage:"Notification message",reminderPlaceholder:"Write your message",reminderDate:"Reminder date",reminderTime:"Reminder time",addReminder:"Save reminder",about:"ℹ️ About",appName:"App name",version:"Version",storageStatus:"Storage status",
+ ageTab:"My Age",dateTab:"Date & Time",years:"years",monthsUnit:"months",daysUnit:"days",weekdays:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+ monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],zodiacNames:["Capricorn","Aquarius","Pisces","Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius"],
+ error:"Please enter a valid birth date",future:"Birth date cannot be in the future",saved:"Birth date saved",added:"Reminder saved",empty:"No saved reminders",developerTitle:"Developer information",developerDesc:"Carefully developed for you",developerName:"Eng. Alzubair Dashilah",whatsapp:"Contact via WhatsApp",close:"Close",invalidReminder:"Please enter all reminder details",notificationDenied:"Notification permission was not granted",notificationUnsupported:"This build does not include the native Android notification service. Enabling the notification permission during APK creation is not enough; scheduled native notifications must be supported by the APK builder.",notificationSent:"Test notification sent",testMessage:"Hello! This is a test notification from My Age.",storageOk:"Local storage is ready",reminderPast:"Choose a date and time in the future",reminderScheduled:"Reminder saved. Background scheduling depends on Android support.",ageSub:"Completed years, months and days as of today",back:"Back"
+}};
+const t=k=>dict[lang][k]??k;
+const fmt=n=>new Intl.NumberFormat(lang==="ar"?"ar":"en").format(n);
+function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2800)}
+function readStore(){try{return JSON.parse(localStorage.getItem(STORE)||"{}")}catch(e){return {}}}
+function writeStore(data){try{localStorage.setItem(STORE,JSON.stringify(data));$("storageStatus").textContent=t("storageOk");return true}catch(e){toast("Storage unavailable");return false}}
+function saveField(key,value){const s=readStore();s[key]=value;writeStore(s)}
+function applyTheme(){document.body.classList.toggle("dark",dark);$("theme").textContent=dark?"☀":"☾";$("darkSetting").checked=dark;saveField("dark",dark)}
+function buildMonths(){const old=$("month").value;$("month").innerHTML="";$("month").add(new Option(t("month"),""));dict[lang].monthNames.forEach((n,i)=>$("month").add(new Option(String(i+1).padStart(2,"0")+" - "+n,String(i+1))));$("month").value=old;updateDays()}
+function updateDays(){const y=Number($("year").value),m=Number($("month").value),old=Number($("day").value);const max=y>0&&m?new Date(y,m,0).getDate():31;$("day").innerHTML="";$("day").add(new Option(t("day"),""));for(let i=1;i<=max;i++)$("day").add(new Option(String(i).padStart(2,"0"),String(i)));if(old&&old<=max)$("day").value=old}
+function applyLanguage(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-t]").forEach(el=>{const key=el.dataset.t;el.textContent=t(key)});
+ document.querySelectorAll("[data-placeholder]").forEach(el=>el.placeholder=t(el.dataset.placeholder));
+ $("language").textContent=lang==="ar"?"EN":"عربي";$("englishSetting").checked=lang==="en";buildMonths();
+ if(birth)renderAge();renderDate();showReminders();saveField("lang",lang)
+}
+function daysInMonth(y,m){return new Date(y,m+1,0).getDate()}
+function makeDate(y,m,d){return new Date(y,m,d,0,0,0,0)}
+function addMonthsClamped(date,count){const total=date.getFullYear()*12+date.getMonth()+count;const y=Math.floor(total/12),m=((total%12)+12)%12;return makeDate(y,m,Math.min(date.getDate(),daysInMonth(y,m)))}
+function calculateDifference(b,today){
+ let years=today.getFullYear()-b.getFullYear();
+ let anniversary=addMonthsClamped(b,years*12);
+ if(anniversary>today){years--;anniversary=addMonthsClamped(b,years*12)}
+ let months=(today.getFullYear()-anniversary.getFullYear())*12+today.getMonth()-anniversary.getMonth();
+ let cursor=addMonthsClamped(anniversary,months);
+ while(cursor>today){months--;cursor=addMonthsClamped(anniversary,months)}
+ while(addMonthsClamped(anniversary,months+1)<=today){months++;cursor=addMonthsClamped(anniversary,months)}
+ return {years,months,days:Math.floor((today-cursor)/DAY)};
+}
+function readBirth(){
+ const y=Number($("year").value),m=Number($("month").value),d=Number($("day").value);
+ if(!Number.isInteger(y)||y<1||y>9999||!m||!d||d>daysInMonth(y,m-1)){toast(t("error"));return null}
+ const b=makeDate(y,m-1,d),now=new Date(),today=makeDate(now.getFullYear(),now.getMonth(),now.getDate());
+ if(b>today){toast(t("future"));return null}return b
+}
+function zodiac(m,d){const starts=[[20,0],[19,1],[21,2],[20,3],[21,4],[21,5],[23,6],[23,7],[23,8],[23,9],[22,10],[22,11]];let i=m-1;if(d<starts[i][0])i=(i+11)%12;return dict[lang].zodiacNames[i]}
+function nextBirthdayDate(b,year){let d=Math.min(b.getDate(),daysInMonth(year,b.getMonth()));return makeDate(year,b.getMonth(),d)}
+function renderAge(){
+ if(!birth)return;
+ const now=new Date(),today=makeDate(now.getFullYear(),now.getMonth(),now.getDate());
+ const diff=calculateDifference(birth,today),{years:y,months:m,days:d}=diff;
+ const totalDays=Math.floor((today-birth)/DAY),elapsed=Math.max(0,now-birth);
+ $("age").textContent=fmt(y)+" "+t("years")+" · "+fmt(m)+" "+t("monthsUnit")+" · "+fmt(d)+" "+t("daysUnit");
+ $("ageSub").textContent=t("ageSub");
+ $("totalMonths").textContent=fmt(y*12+m);$("totalDays").textContent=fmt(totalDays);$("totalWeeks").textContent=fmt(Math.floor(totalDays/7));
+ $("totalHours").textContent=fmt(Math.floor(elapsed/3600000));$("totalMinutes").textContent=fmt(Math.floor(elapsed/60000));$("totalSeconds").textContent=fmt(Math.floor(elapsed/1000));
+ let next=nextBirthdayDate(birth,now.getFullYear());if(next<=today)next=nextBirthdayDate(birth,now.getFullYear()+1);
+ let previous=nextBirthdayDate(birth,now.getFullYear());if(previous>today)previous=nextBirthdayDate(birth,now.getFullYear()-1);
+ const remaining=Math.max(0,Math.ceil((next-today)/DAY));
+ const span=Math.max(1,next-previous),percent=Math.min(100,Math.max(0,Math.round((today-previous)/span*100)));
+ $("remaining").textContent=fmt(remaining);$("nextDate").textContent=new Intl.DateTimeFormat(lang==="ar"?"ar":"en",{day:"numeric",month:"long",year:"numeric"}).format(next);
+ $("nextWeekday").textContent=dict[lang].weekdays[next.getDay()];$("progressBar").style.width=percent+"%";$("percentage").textContent=fmt(percent)+"%";
+ $("birthWeekday").textContent=dict[lang].weekdays[birth.getDay()];$("zodiac").textContent=zodiac(birth.getMonth()+1,birth.getDate());$("nextAge").textContent=fmt(y+1)+" "+t("years");
+ $("results").classList.remove("hidden")
+}
+function saveBirthData(b){const s=readStore();s.birth=[b.getFullYear(),b.getMonth()+1,b.getDate()];s.saveBirth=$("saveBirth").checked;writeStore(s);syncNativeNotifications()}
+$("calculate").onclick=()=>{const b=readBirth();if(!b)return;birth=b;if($("saveBirth").checked)saveBirthData(b);else{const s=readStore();delete s.birth;s.saveBirth=false;writeStore(s);syncNativeNotifications()}renderAge();toast(t("saved"))};
+$("year").addEventListener("input",updateDays);$("month").addEventListener("change",updateDays);
+$("saveBirth").addEventListener("change",()=>{saveField("saveBirth",$("saveBirth").checked);if(!$("saveBirth").checked){const s=readStore();delete s.birth;writeStore(s);syncNativeNotifications()}else if(birth)saveBirthData(birth)});
+$("share").onclick=async()=>{if(!birth)return;const message=t("currentAge")+": "+$("age").textContent;try{if(navigator.share)await navigator.share({title:t("name"),text:message});else if(navigator.clipboard){await navigator.clipboard.writeText(message);toast("✓")}else toast(message)}catch(e){}};
+function renderDate(){
+ const now=new Date(),locale=lang==="ar"?"ar":"en";
+ $("clock").textContent=new Intl.DateTimeFormat(locale,{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}).format(now);
+ $("ampm").textContent=new Intl.DateTimeFormat(locale,{hour:"numeric",hour12:true}).format(now);
+ $("gregorian").textContent=new Intl.DateTimeFormat(locale,{year:"numeric",month:"long",day:"numeric"}).format(now);
+ $("gregWeekday").textContent=dict[lang].weekdays[now.getDay()];
+ try{$("hijri").textContent=new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura",{year:"numeric",month:"long",day:"numeric"}).format(now)+" هـ"}catch(e){try{$("hijri").textContent=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{year:"numeric",month:"long",day:"numeric"}).format(now)+" هـ"}catch(e2){$("hijri").textContent="—"}}
+ $("hijriWeekday").textContent=dict.ar.weekdays[now.getDay()];$("timezone").textContent=Intl.DateTimeFormat().resolvedOptions().timeZone||"—";
+ $("currentYear").textContent=fmt(now.getFullYear());const start=makeDate(now.getFullYear(),0,1);$("dayNumber").textContent=fmt(Math.floor((makeDate(now.getFullYear(),now.getMonth(),now.getDate())-start)/DAY)+1)
+}
+function changeScreen(name,fromPop=false){
+ if(!["age","date","settings"].includes(name))return;
+ if(name===currentScreen)return;
+ if(!fromPop){screenStack.push(currentScreen);try{history.pushState({screen:name},"","#"+name)}catch(e){}}
+ currentScreen=name;["ageScreen","dateScreen","settingsScreen"].forEach(id=>$(id).classList.remove("active"));$(name+"Screen").classList.add("active");
+ $("ageNav").classList.toggle("active",name==="age");$("dateNav").classList.toggle("active",name==="date");
+ window.scrollTo({top:0,behavior:"instant"});
+}
+$("ageNav").onclick=()=>changeScreen("age");$("dateNav").onclick=()=>changeScreen("date");$("settingsBtn").onclick=()=>changeScreen("settings");
+function goBack(){
+ if($("developerPopup").classList.contains("show")){$("developerPopup").classList.remove("show");return true}
+ if(currentScreen!=="age"){const previous=screenStack.pop()||"age";changeScreen(previous,true);return true}
+ return false
+}
+history.replaceState({screen:"age"},"","#age");
+window.addEventListener("popstate",()=>{
+ if(!goBack()){
+  const bridge=window.AndroidBridge;
+  if(bridge&&typeof bridge.exitApp==="function"){try{bridge.exitApp()}catch(e){}}
+  // If no native exit method exists, leave the WebView at its root so Android
+  // can handle the next system-back action instead of trapping the user.
+ }
+});
+window.onAndroidBack=()=>goBack();
+document.addEventListener("keydown",e=>{if(e.key==="Escape")goBack()});
+$("theme").onclick=()=>{dark=!dark;applyTheme()};$("darkSetting").onchange=()=>{dark=$("darkSetting").checked;applyTheme()};
+$("language").onclick=()=>{lang=lang==="ar"?"en":"ar";applyLanguage()};
+$("englishSetting").onchange=()=>{lang=$("englishSetting").checked?"en":"ar";applyLanguage()};
+$("developerBtn").onclick=()=>{$("developerPopup").classList.add("show")};
+$("closeDeveloper").onclick=()=>{$("developerPopup").classList.remove("show")};
+$("developerPopup").addEventListener("click",e=>{if(e.target===$("developerPopup"))$("developerPopup").classList.remove("show")});
+$("whatsappLink").addEventListener("click",()=>{saveField("lastContact","whatsapp")});
+
+const settingKeys=["notifyEnabled","daily","dailyTime","birthdayNotice","beforeBirthday","beforeDays","eidNotice","customNotice"];
+function settingsObject(){const o={};settingKeys.forEach(k=>o[k]=$(k).type==="checkbox"?$(k).checked:$(k).value);return o}
+function nativeNotificationPayload(){const s=readStore();return { ...settingsObject(), birthDate:Array.isArray(s.birth)?s.birth.join("-"):"", language:lang }}
+function syncNativeNotifications(){const bridge=window.AndroidBridge;if(bridge&&typeof bridge.setNotificationSettings==="function"){try{bridge.setNotificationSettings(JSON.stringify(nativeNotificationPayload()))}catch(e){}}}
+function saveSettings(){const s=readStore();s.settings=settingsObject();writeStore(s);syncNativeNotifications()}
+function syncSwitches(){const enabled=$("notifyEnabled").checked;document.querySelectorAll(".notice").forEach(el=>el.disabled=!enabled);$("dailyTime").disabled=!enabled||!$("daily").checked;$("beforeDays").disabled=!enabled||!$("beforeBirthday").checked}
+settingKeys.forEach(k=>$(k).addEventListener("change",()=>{syncSwitches();saveSettings();if(k==="notifyEnabled"&&$(k).checked){const b=window.AndroidBridge;if(b&&typeof b.requestNotificationPermission==="function"){try{b.requestNotificationPermission();b.requestExactAlarmPermission()}catch(e){}}}}));
+async function testNotification(){
+ const bridge=window.AndroidBridge;
+ if(bridge&&typeof bridge.testNotification==="function"){try{bridge.testNotification(t("testMessage"));toast(t("notificationSent"));return}catch(e){}}
+ if(!("Notification" in window)){toast(t("notificationUnsupported"));return}
+ try{let permission=Notification.permission;if(permission==="default"&&Notification.requestPermission)permission=await Notification.requestPermission();if(permission==="granted"){new Notification(t("name"),{body:t("testMessage")});toast(t("notificationSent"))}else toast(t("notificationDenied"))}catch(e){toast(t("notificationUnsupported"))}
+}
+$("testNotification").onclick=testNotification;
+function reminders(){try{const s=readStore();return Array.isArray(s.reminders)?s.reminders:[]}catch(e){return []}}
+function saveReminders(list){const s=readStore();s.reminders=list;writeStore(s)}
+function showReminders(){
+ const list=reminders();$("reminderList").innerHTML="";
+ if(!list.length){const p=document.createElement("p");p.className="small";p.textContent=t("empty");$("reminderList").append(p);return}
+ list.forEach(item=>{const row=document.createElement("div");row.className="reminder";const label=document.createElement("span");label.textContent=item.message+" — "+item.date+" "+item.time;const del=document.createElement("button");del.className="secondary";del.textContent="×";del.setAttribute("aria-label","Delete reminder");del.onclick=()=>{saveReminders(reminders().filter(x=>x.id!==item.id));const b=window.AndroidBridge;if(b&&typeof b.cancelReminder==="function"){try{b.cancelReminder(String(item.id))}catch(e){}}showReminders()};row.append(label,del);$("reminderList").append(row)})
+}
+$("addReminder").onclick=()=>{
+ const message=$("reminderMessage").value.trim(),date=$("reminderDate").value,time=$("reminderTime").value;
+ if(!message||!date||!time){toast(t("invalidReminder"));return}
+ const when=new Date(date+"T"+time+":00");if(Number.isNaN(when.getTime())||when.getTime()<=Date.now()){toast(t("reminderPast"));return}
+ const item={id:String(Date.now()),message,date,time,epoch:when.getTime()};const list=reminders();list.push(item);saveReminders(list);
+ const bridge=window.AndroidBridge;
+ if(bridge&&typeof bridge.scheduleReminder==="function"){try{bridge.scheduleReminder(JSON.stringify(item))}catch(e){}}
+ $("reminderMessage").value="";showReminders();toast(t("reminderScheduled"))
+};
+function restore(){
+ const s=readStore();
+ lang=s.lang==="en"?"en":"ar";dark=!!s.dark;
+ $("saveBirth").checked=s.saveBirth!==false;
+ if(s.birth&&Array.isArray(s.birth)&&s.birth.length===3){
+  const [y,m,d]=s.birth;const test=makeDate(Number(y),Number(m)-1,Number(d));const now=new Date();
+  if(Number.isFinite(test.getTime())&&test<=makeDate(now.getFullYear(),now.getMonth(),now.getDate())){
+   birth=test;$("year").value=y;buildMonths();$("month").value=String(m);updateDays();$("day").value=String(d);renderAge()
+  }
+ }
+ if(s.settings){settingKeys.forEach(k=>{if(s.settings[k]!==undefined){if($(k).type==="checkbox")$(k).checked=!!s.settings[k];else $(k).value=s.settings[k]}})}
+ applyTheme();applyLanguage();syncSwitches();showReminders();$("storageStatus").textContent=t("storageOk");syncNativeNotifications();reminders().forEach(item=>{const b=window.AndroidBridge;if(b&&typeof b.scheduleReminder==="function"){try{b.scheduleReminder(JSON.stringify(item))}catch(e){}}})
+}
+restore();renderDate();
+setInterval(()=>{renderDate();if(birth)renderAge()},1000);
+
+// Optional native bridge contract. These calls only run if the APK wrapper implements them.
+// Expected methods: setNotificationSettings(json), requestNotificationPermission(),
+// testNotification(message), scheduleReminder(json), cancelReminder(id), exitApp().
+window.OmriApp={
+ goBack,
+ getScreen:()=>currentScreen,
+ getBirthDate:()=>birth?{year:birth.getFullYear(),month:birth.getMonth()+1,day:birth.getDate()}:null,
+ exportData:()=>readStore(),
+ importData:data=>{if(data&&typeof data==="object"){localStorage.setItem(STORE,JSON.stringify(data));location.reload();return true}return false}
+};
+})();
+</script>
+</body>
+</html>
